@@ -21,17 +21,37 @@ $(function () {
         }
         console.log(Number.isInteger(Number.parseInt(size)));
         console.log('size: ' + size + ' dim: ' + dim + ' max: ' + max);
-        var url = '/play/size=' + size +'?dim=' + dim + '?max=' + max;
+        var url = '/play/size/' + size +'/dim/' + dim + '/max/' + max;
             console.log(url);
         
         $.ajax({
         
-            url: "/play/size=" + size +"?dim=" + dim + "?max=" + max,
+            url: "/play/size/" + size +"/dim/" + dim + "/max/" + max,
             dataType: 'json',
             method: 'GET'
         
         }).done(function(data){
-            console.log(data);
+            var size = data['puzzle'].size;
+            var dim = data['puzzle'].dim;
+            var max = data['puzzle'].max;
+            $('.cols').remove();
+            $('.mark').remove();
+            $('.gameField').append('<div class="cols"><table><tr></tr></table></div>');
+            for(i=0;i<size;i++){
+                $('tr').append('<td><input type="text" class="answer"/></td>');
+            }
+            $('.markButton').append('<button class="mark" id="mark">Zatwierdź Odpowiedź</button>');
+            console.log(data['puzzle'].data);
+            
+            $('.mark').on('click',function(){
+                var answers = [];
+                $('tr input').each(function(){
+                   var value = Number.parseInt($(this).val());
+                    answers.push(value);
+                    console.log(value);
+                });
+            }); 
         })
     });
+
 });

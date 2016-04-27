@@ -17,20 +17,23 @@ exports.play = function (req, res) {
         }
         req.session.puzzle.data = data;
         return {
-            "retMsg": "kurwyWinoIPianino"
+            "retMsg": "kurwyWinoIPianino",
+            "puzzle": puzzle
         };
     };
     // poniższa linijka jest zbędna (przy założeniu, że
     // play zawsze używany będzie po index) – w końcowym
     // rozwiązaniu można ją usunąć.
     req.session.puzzle = req.session.puzzle || req.app.get('puzzle');
-    /*
-     * req.params[2] === wartość size
-     * req.params[4] === wartość dim
-     * req.params[6] === wartość max
-     */
     if (req.params[2]) {
+
         req.session.puzzle.size = req.params[2];
+    }
+    if (req.params[4]) {
+        req.session.puzzle.dim =   req.params[4];
+    }
+    if (req.params[6]) {
+        req.session.max =  req.params[6];
     }
     res.json(newGame());
 };
