@@ -22,6 +22,9 @@ app.set('puzzle', {
     max: null // maksymalna liczba prób (null – brak ograniczeń)
 });
 
+app.set('black',0);
+app.set('white',0);
+
 // obsługa danych typu application/json
 app.use(bodyParser.json());
 // obsługa danych typu application/x-www-form-urlencoded

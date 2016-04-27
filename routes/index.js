@@ -25,27 +25,42 @@ exports.play = function (req, res) {
     // play zawsze używany będzie po index) – w końcowym
     // rozwiązaniu można ją usunąć.
     req.session.puzzle = req.session.puzzle || req.app.get('puzzle');
+    console.log(Number.parseInt(req.params.length));
+    console.log(Number.parseInt(req.params[4]));
     if (req.params[2]) {
-
         req.session.puzzle.size = req.params[2];
     }
     if (req.params[4]) {
         req.session.puzzle.dim =   req.params[4];
     }
     if (req.params[6]) {
-        req.session.max =  req.params[6];
+        req.session.puzzle.max =  req.params[6];
     }
     res.json(newGame());
 };
 
 exports.mark = function (req, res) {
-    var markAnswer = function () {
+        var markAnswer = function () {
         var move = req.params[0].split('/');
+        req.session.puzzle.max = Number.parseInt(req.session.puzzle.max) - 1;
+        console.log('Pozostała ilość prób: ' + Number.parseInt(req.session.puzzle.max));
+        var counter = Number.parseInt(req.session.puzzle.max);
         move = move.slice(0, move.length - 1);
         console.log(move);
+        var notes = [] ;
+        for(i=0;i<move.length;i++){
+            if(Number.parseInt(move[i]) === Number.parseInt(req.session.puzzle.data[i])){
+                console.log('OK');
+                notes.push('black');
+            }else{
+                console.log('BAD');
+                notes.push('white');
+            }
+        }
         return {
-            "retVal": "tutaj – zamiast tego napisu – ocena",
-            "retMsg": "coś o ocenie – np „Brawo” albo „Buuu”"
+            "notes": notes,
+            "retMsg": "pierdol się",
+            "counter": counter
         };
     };
     res.json(markAnswer());
